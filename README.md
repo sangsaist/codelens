@@ -13,6 +13,7 @@ Each college can deploy its own instance.
 Most colleges track coding performance manually or inconsistently.
 
 Problems:
+
 - No structured growth tracking
 - No historical performance insights
 - No analytics-driven mentoring
@@ -53,6 +54,17 @@ The system is designed for single-college deployment but can scale to thousands 
 
 ---
 
+## 🔗 Available API Endpoints
+
+| Method | Endpoint          | Description               |
+|--------|-------------------|---------------------------|
+| POST   | /auth/register    | Register new user         |
+| POST   | /auth/login       | Login and receive JWT     |
+| GET    | /protected        | JWT protected route       |
+| GET    | /health           | Health check              |
+
+---
+
 ## 🚀 Features (v1.0 – Foundation Release)
 
 - JWT Authentication
@@ -67,6 +79,24 @@ The system is designed for single-college deployment but can scale to thousands 
 - Class-level leaderboards
 - Change request approval workflow
 - Docker-based deployment
+
+---
+
+## ✅ Current MVP Status
+
+- User registration & login (JWT based)
+- Role system (admin, student, counsellor)
+- Automatic student profile creation
+- PostgreSQL integration
+- Database migrations using Flask-Migrate
+- Dev branch workflow
+
+## 🗄️ Current Database Tables
+
+- users
+- roles
+- user_roles
+- students
 
 ---
 

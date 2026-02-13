@@ -132,6 +132,21 @@ Major architectural changes must be discussed before implementation.
 
 ---
 
+## ✅ Completed
+
+- Authentication system
+- Role system
+- Student profile auto-creation
+- Clean migration setup
+
+---
+
+## 🚧 In Progress
+
+- Academic structure (Departments, Batches, Classes)
+
+---
+
 ## Roadmap Policy
 
 - Each major version will maintain database stability.

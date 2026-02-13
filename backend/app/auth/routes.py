@@ -1,12 +1,13 @@
 from flask import Blueprint, request, jsonify
 from app.extensions import db
-from app.auth.models import User
+from app.auth.models import User, Role, UserRole
 from app.common.utils import hash_password
 from flask_jwt_extended import create_access_token
 from app.common.utils import verify_password
+from app.students.models import Student
+
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
-
 @auth_bp.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
@@ -31,6 +32,27 @@ def register():
     )
 
     db.session.add(new_user)
+    db.session.flush()  # get new_user.id before commit
+
+    # Assign default student role
+    student_role = Role.query.filter_by(name="student").first()
+
+    user_role = UserRole(
+        user_id=new_user.id,
+        role_id=student_role.id
+    )
+
+    db.session.add(user_role)
+
+    # Create student profile
+    student_profile = Student(
+        user_id=new_user.id,
+        register_number=f"REG{new_user.id[:8]}",
+        admission_year=2026
+    )
+
+    db.session.add(student_profile)
+
     db.session.commit()
 
     return jsonify({"message": "User registered successfully"}), 201

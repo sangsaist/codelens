@@ -14,3 +14,22 @@ class User(db.Model):
 
     def __repr__(self):
         return f"<User {self.email}>"
+class Role(db.Model):
+    __tablename__ = "roles"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"<Role {self.name}>"
+
+class UserRole(db.Model):
+    __tablename__ = "user_roles"
+
+    user_id = db.Column(db.String(36), db.ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    role_id = db.Column(db.Integer, db.ForeignKey("roles.id", ondelete="CASCADE"), primary_key=True)
+    assigned_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship("User", backref=db.backref("roles", lazy=True))
+    role = db.relationship("Role", backref=db.backref("users", lazy=True))
+

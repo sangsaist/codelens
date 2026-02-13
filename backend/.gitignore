@@ -3,21 +3,27 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.db
 
-# Virtual environment
+# Virtual environments
 venv/
 env/
 .venv/
+backend/venv/
 
 # Environment variables
 .env
+backend/.env
 
 # VS Code
 .vscode/
 
+# Database files (if using sqlite in future)
+*.db
+*.sqlite3
+
 # Migrations cache
 migrations/__pycache__/
+backend/migrations/__pycache__/
 
 # OS files
 .DS_Store

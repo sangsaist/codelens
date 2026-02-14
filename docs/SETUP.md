@@ -1,154 +1,173 @@
 
-# ⚙️ CodeLens Backend Setup Guide
+# ⚙️ CodeLens Backend Setup & Usage Guide
 
-This guide explains how to run the CodeLens backend locally.
-
----
-
-## 🧱 Prerequisites
-
-- Python 3.11+
-- PostgreSQL 14+
-- Git
+This guide explains how to set up, run, and explore the **CodeLens Backend**.
 
 ---
 
-## 📦 1. Clone Repository
+## 🏗️ Prerequisites
 
+- **Python 3.11+**
+- **PostgreSQL 14+**
+- **Git**
+
+---
+
+## 📦 1. Installation
+
+### Clone the Repository
 ```bash
 git clone <your-repo-url>
 cd codelens/backend
-````
-
----
-
-## 🐍 2. Create Virtual Environment
-
-```bash
-python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # Mac/Linux
 ```
 
-Install dependencies:
+### Create Virtual Environment
+```bash
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# Mac/Linux
+source venv/bin/activate
+```
 
+### Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## 🗄️ 3. Setup PostgreSQL
+## 🗄️ 2. Database Configuration
 
-Open PostgreSQL:
+### create a `.env` file in the `backend/` directory (Optional but recommended)
+Or update `app/config.py` directly (for MVP).
 
-```bash
-psql -U postgres
+**Default DB Configuration (in `app/config.py`):**
+```python
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    'postgresql://postgres:password@localhost/codelens'
 ```
 
-Create database:
-
-```sql
-CREATE DATABASE codelens;
-\q
-```
+### Setup PostgreSQL
+1. Open PostgreSQL shell:
+   ```bash
+   psql -U postgres
+   ```
+2. Create the database:
+   ```sql
+   CREATE DATABASE codelens;
+   \q
+   ```
 
 ---
 
-## ⚙️ 4. Configure Database
+## 🔄 3. Database Migrations
 
-Edit:
-
-```text
-backend/app/config.py
-```
-
-Set your database URL:
-
-```text
-postgresql://postgres:<your_password>@localhost:5432/codelens
-```
-
----
-
-## 🔄 5. Run Migrations
-
-Inside backend folder:
+Initialize the database schema:
 
 ```bash
 flask db upgrade
 ```
 
-This creates required tables:
-
-- users
-- roles
-- user_roles
-- students
+This creates all required tables: `users`, `roles`, `students`, `departments`, `platform_accounts`, `platform_snapshots`, etc.
 
 ---
 
-## 🌱 6. Seed Default Roles
+## 🛠️ 4. Bootstrap Admin & Roles
 
-Open Python shell:
+**IMPORTANT**: We have a development-only bootstrap endpoint to set up the admin user and initial roles.
 
-```bash
-python
-```
+1. **Start the Server**:
+   ```bash
+   python run.py
+   ```
 
-```python
-from app import create_app
-from app.auth.seed import seed_roles
+2. **Run Bootstrap Command** (using Curl or Postman):
+   ```bash
+   curl -X POST http://127.0.0.1:5000/setup/bootstrap-admin \
+     -H "Content-Type: application/json" \
+     -d '{
+       "email": "admin@codelens.com",
+       "password": "adminSecret123",
+       "full_name": "System Administrator"
+     }'
+   ```
 
-app = create_app()
+   **Response**:
+   ```json
+   {
+     "success": true,
+     "message": "Admin bootstrapped successfully"
+   }
+   ```
 
-with app.app_context():
-    seed_roles()
-
-exit()
-```
-
-This seeds:
-
-- admin
-- student
-- counsellor
+   *This automatically creates `admin` and `student` roles if they don't exist.*
 
 ---
 
-## 🚀 7. Run Server
+## 🚀 5. Run the Server
+
+If not already running:
 
 ```bash
 python run.py
 ```
 
-Server runs at:
-<http://127.0.0.1:5000>
+Server runs at: **http://127.0.0.1:5000**
 
 ---
 
-## 🧪 Test API
+## 📚 6. API Modules & Key Endpoints
 
-Register user:
-POST /auth/register
+### 🔐 Authentication (`/auth`)
+- **POST** `/auth/register` - Register a new student.
+- **POST** `/auth/login` - Login and get JWT token.
 
-Login:
-POST /auth/login
+### 🎓 Academics (`/academics`)
+- **POST** `/academics/departments` - Create a department (Admin only).
+- **GET** `/academics/departments` - List all departments.
+
+### �‍🎓 Students (`/students`)
+- **PUT** `/students/<id>/assign-department` - Assign department to student (Admin only).
+
+### 🔗 Platforms (`/platforms`)
+- **POST** `/platforms/link` - Link a coding account (LeetCode, GitHub, etc.).
+- **GET** `/platforms/my` - View linked accounts.
+
+### 📸 Snapshots (`/snapshots`)
+- **POST** `/snapshots` - Record a performance snapshot (Daily solved count, rating).
+- **GET** `/snapshots/<account_id>` - Get history.
+
+### 📊 Analytics (`/analytics`)
+- **GET** `/analytics/my-summary` - Get comprehensive student dashboard.
+- **GET** `/analytics/my-growth/<account_id>` - Get specific platform growth.
+- **GET** `/analytics/department/<dept_id>/leaderboard` - Department leaderboard.
 
 ---
 
-## 🧠 Current MVP Features
+## � Project Structure
 
-- User authentication (JWT)
-- Role-based system
-- Automatic student profile creation
-- PostgreSQL with migrations
+```text
+app/
+├── auth/           # Login, Register, Role Management
+├── students/       # Student Profile Logic
+├── academics/      # Department Management
+├── platforms/      # Coding Platform Linking (LeetCode, etc.)
+├── snapshots/      # Historical Data Tracking
+├── analytics/      # Growth Engine & Leaderboards
+├── setup/          # Dev Tools & Bootstrapping
+├── common/         # Shared Utilities & Responses
+├── __init__.py     # App Factory
+├── config.py       # Configuration
+└── extensions.py   # DB, JWT, Migrate instances
+```
 
 ---
 
-## 🚧 Coming Next
+## 🧪 Testing
 
-- Academic structure (Departments, Batches, Classes)
-- Platform accounts (LeetCode, GitHub)
-- Snapshot engine
-- Analytics & Leaderboards
+You can use the provided `test_institutional_mvp.py` script to test the entire flow end-to-end.
+
+```bash
+python test_institutional_mvp.py
+```

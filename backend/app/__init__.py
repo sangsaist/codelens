@@ -1,26 +1,32 @@
+
 from flask import Flask
 from .config import Config
 from .extensions import db, migrate, jwt
-
-
 
 def create_app():
     flask_app = Flask(__name__)
     flask_app.config.from_object(Config)
 
     db.init_app(flask_app)
-    migrate.init_app(flask_app, db)
     jwt.init_app(flask_app)
 
-    # Import models
+    # Import models to ensure they are registered with SQLAlchemy
     import app.auth.models
     import app.students.models
     import app.academics.models
     import app.platforms.models
+    import app.snapshots.models
+    # import app.analytics.models # Empty for now
+
+    # Initialize Migrate after models are imported
+    migrate.init_app(flask_app, db)
 
     # Register blueprints
     from app.auth.routes import auth_bp
     flask_app.register_blueprint(auth_bp)
+
+    from app.students.routes import students_bp
+    flask_app.register_blueprint(students_bp)
 
     from app.academics.routes import academics_bp
     flask_app.register_blueprint(academics_bp)
@@ -28,14 +34,15 @@ def create_app():
     from app.platforms.routes import platforms_bp
     flask_app.register_blueprint(platforms_bp)
 
-    from flask_jwt_extended import jwt_required, get_jwt_identity
-    
-    
-    @flask_app.route("/protected")
-    @jwt_required()
-    def protected():
-        current_user_id = get_jwt_identity()
-        return {"logged_in_as": current_user_id}
+    from app.snapshots.routes import snapshots_bp
+    flask_app.register_blueprint(snapshots_bp)
+
+    from app.analytics.routes import analytics_bp
+    flask_app.register_blueprint(analytics_bp)
+
+    import app.setup.routes
+    from app.setup.routes import setup_bp
+    flask_app.register_blueprint(setup_bp)
 
     @flask_app.route("/health")
     def health():

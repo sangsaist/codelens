@@ -12,6 +12,8 @@ class Student(db.Model):
         unique=True,
         nullable=False
     )
+    
+    department_id = db.Column(db.String(36), db.ForeignKey("departments.id", ondelete="SET NULL"), nullable=True)
 
     register_number = db.Column(db.String(50), unique=True, nullable=False)
     phone = db.Column(db.String(20))
@@ -24,3 +26,4 @@ class Student(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship("User", backref=db.backref("student_profile", uselist=False))
+    department = db.relationship("Department", backref="students")

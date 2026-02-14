@@ -74,10 +74,11 @@ The UI must adapt based on the user's role array returned during login.
 
 | Role | Access Level |
 | :--- | :--- |
-| **student** | View own dashboard, link platforms, view leaderboards. |
-| **admin** | Create departments, assign students, view all students. |
-| **hod** | View department statistics, leaderboards (Department scoped). |
-| **counsellor** | View assigned student progress (Read-only access). |
+| **student** | View own dashboard, link platforms, manual entry. |
+| **admin** | Create departments, manage staff hierarchy (HODs). |
+| **hod** | View department analytics, manage advisors/counsellors. |
+| **advisor** | View batch analytics, manage counsellors. |
+| **counsellor** | Validate student progress snapshots. |
 
 ### Protected Route Logic
 Wrap critical routes in a `ProtectedRoute` component that checks:
@@ -139,18 +140,16 @@ A tabular view allowing filtering by department.
 
 | Method | Endpoint | Role | Description |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/auth/login` | Public | Authenticate user |
-| `POST` | `/auth/register` | Public | Create new account |
-| `GET` | `/analytics/my-summary` | Student | Full dashboard data aggregation |
-| `GET` | `/platforms/my` | Student | List linked coding accounts |
-| `POST` | `/platforms/link` | Student | Connect LeetCode/Codeforces |
-| `DELETE` | `/platforms/<id>` | Student | Unlink a platform |
-| `POST` | `/snapshots` | Student | Record daily progress snapshot |
-| `GET` | `/snapshots/<account_id>` | Student | Get history for charts |
-| `GET` | `/academics/departments` | Public/Auth | List available departments |
-| `POST` | `/academics/departments` | Admin | Create new department |
-| `PUT` | `/students/<id>/assign-department` | Admin | Assign student to department |
-| `GET` | `/analytics/department/<id>/leaderboard` | Admin/HOD | View ranked student list |
+| `POST` | `/auth/login` | Public | Authenticate |
+| `POST` | `/staff/create` | Admin/HOD | Create Staff (HOD, Advisor, Counsellor) |
+| `GET` | `/staff/my-team` | Staff | View reporting hierarchy |
+| `GET` | `/analytics/my-summary` | Student | Dashboard data |
+| `GET` | `/analytics/institution-summary` | Admin/HOD | High-level analytics |
+| `GET` | `/analytics/counsellor/summary` | Counsellor | Workload overview |
+| `POST` | `/platforms/link` | Student | Connect account |
+| `POST` | `/snapshots` | Student | Manual entry |
+| `GET` | `/counsellor/pending-snapshots` | Counsellor | List pending reviews |
+| `PUT` | `/counsellor/snapshots/<id>/approve` | Counsellor | Approve progress |
 
 ---
 
@@ -200,10 +199,11 @@ src/
 │   └── useAuth.js         # Hook to access auth context
 ├── pages/
 │   ├── Login.jsx
-│   ├── Register.jsx
 │   ├── StudentDashboard.jsx
-│   ├── AdminPanel.jsx
-│   └── Leaderboard.jsx
+│   ├── InstitutionDashboard.jsx
+│   ├── CounsellorDashboard.jsx
+│   └── staff/
+│       └── StaffManagement.jsx
 ├── routes/
 │   ├── AppRoutes.jsx      # Route definitions
 │   └── ProtectedRoute.jsx # Role checking wrapper

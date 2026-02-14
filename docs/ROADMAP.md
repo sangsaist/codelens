@@ -134,16 +134,20 @@ Major architectural changes must be discussed before implementation.
 
 ## ✅ Completed
 
-- Authentication system
-- Role system
-- Student profile auto-creation
-- Clean migration setup
+- Authentication system (JWT, Roles)
+- Student Profiles & Platform Linking
+- Academic Hierarchy (Departments/Batches)
+- Staff Management System (HOD, Advisor, Counsellor)
+- Analytics Dashboards (Student, Institution, Counsellor)
+- Snapshot Tracking & Review Workflow
 
 ---
 
 ## 🚧 In Progress
 
-- Academic structure (Departments, Batches, Classes)
+- Historical Data Migration
+- Advanced Reporting
+- Email Notifications
 
 ---
 

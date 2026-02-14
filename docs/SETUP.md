@@ -17,7 +17,7 @@ This guide explains how to set up, run, and explore the **CodeLens Backend**.
 
 ### Clone the Repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/sangsaist/codelens.git
 cd codelens/backend
 ```
 
@@ -121,27 +121,36 @@ Server runs at: **http://127.0.0.1:5000**
 
 ### 🔐 Authentication (`/auth`)
 - **POST** `/auth/register` - Register a new student.
-- **POST** `/auth/login` - Login and get JWT token.
+- **POST** `/auth/login` - Login and get JWT token (includes roles).
 
 ### 🎓 Academics (`/academics`)
-- **POST** `/academics/departments` - Create a department (Admin only).
-- **GET** `/academics/departments` - List all departments.
+- **GET** `/academics/departments` - List departments.
+- **POST** `/academics/departments` - Create department (Admin).
 
-### �‍🎓 Students (`/students`)
-- **PUT** `/students/<id>/assign-department` - Assign department to student (Admin only).
+### 👨‍🏫 Staff Management (`/staff`)
+- **POST** `/staff/create` - Create HOD/Advisor/Counsellor (Admin/HOD).
+- **GET** `/staff/my-team` - View hierarchical team members.
+
+### 👩‍🎓 Students (`/students`)
+- **PUT** `/students/<id>/assign-department` - Assign details.
 
 ### 🔗 Platforms (`/platforms`)
-- **POST** `/platforms/link` - Link a coding account (LeetCode, GitHub, etc.).
+- **POST** `/platforms/link` - Link LeetCode/GitHub.
 - **GET** `/platforms/my` - View linked accounts.
 
 ### 📸 Snapshots (`/snapshots`)
-- **POST** `/snapshots` - Record a performance snapshot (Daily solved count, rating).
-- **GET** `/snapshots/<account_id>` - Get history.
+- **POST** `/snapshots` - Manual progress entry.
+- **GET** `/snapshots/<account_id>` - View history.
 
 ### 📊 Analytics (`/analytics`)
-- **GET** `/analytics/my-summary` - Get comprehensive student dashboard.
-- **GET** `/analytics/my-growth/<account_id>` - Get specific platform growth.
-- **GET** `/analytics/department/<dept_id>/leaderboard` - Department leaderboard.
+- **GET** `/analytics/my-summary` - Student dashboard.
+- **GET** `/analytics/institution-summary` - Admin/HOD view.
+- **GET** `/analytics/counsellor/summary` - Counsellor workload view.
+
+### ✅ Review (`/counsellor`)
+- **GET** `/counsellor/pending-snapshots` - List items to review.
+- **PUT** `/counsellor/snapshots/<id>/approve` - Approve data.
+- **PUT** `/counsellor/snapshots/<id>/reject` - Reject data.
 
 ---
 
@@ -149,17 +158,19 @@ Server runs at: **http://127.0.0.1:5000**
 
 ```text
 app/
-├── auth/           # Login, Register, Role Management
-├── students/       # Student Profile Logic
-├── academics/      # Department Management
-├── platforms/      # Coding Platform Linking (LeetCode, etc.)
-├── snapshots/      # Historical Data Tracking
-├── analytics/      # Growth Engine & Leaderboards
-├── setup/          # Dev Tools & Bootstrapping
-├── common/         # Shared Utilities & Responses
+├── auth/           # Login, Register, Roles
+├── staff/          # Staff Profiles (HOD, Advisor, Counsellor)
+├── academics/      # Departments & Batches
+├── students/       # Student Profiles
+├── platforms/      # External Account Linking
+├── snapshots/      # Progress Tracking
+├── analytics/      # Data Aggregation
+├── counsellor/     # Review Dashboards
+├── review/         # Approval Logic
+├── common/         # Utilities (RBAC, Responses)
+├── setup/          # Bootstrapping Scripts
 ├── __init__.py     # App Factory
-├── config.py       # Configuration
-└── extensions.py   # DB, JWT, Migrate instances
+└── extensions.py   # Database & Plugins
 ```
 
 ---

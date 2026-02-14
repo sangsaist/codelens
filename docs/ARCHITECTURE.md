@@ -120,13 +120,15 @@ This hierarchy allows:
 
 System roles include:
 
-- Admin
-- Counsellor
+- Admin (Superuser)
+- HOD (Head of Department)
+- Advisor (Class/Batch Mentor)
+- Counsellor (Technical Reviewer)
 - Student
 
 Role-based access ensures:
 
-- Controlled data access
+- Controlled data access (Scoped to Department/Batch)
 - Secure operations
 - Structured workflow management
 
@@ -138,8 +140,8 @@ Students cannot directly modify critical data.
 
 Instead:
 
-1. Student submits change request
-2. Counsellor reviews request
+1. Student submits snapshot/link request
+2. Counsellor/Advisor reviews request
 3. Approval or rejection recorded
 4. Change history maintained
 
@@ -151,16 +153,16 @@ This ensures auditability and accountability.
 
 The backend is organized into independent modules:
 
-- auth
-- academic
-- student
-- platform
-- snapshot
-- analytics
-- leaderboard
-- placement
-- approval
-- audit
+- auth (Authentication & RBAC)
+- staff (Hierarchy Management: HOD, Advisor)
+- academics (Departments, Batches)
+- students (Profiles)
+- platforms (LeetCode, GitHub linkage)
+- snapshots (Time-series data)
+- analytics (Growth & Leaderboards)
+- counsellor (Review Dashboard)
+- review (Approval Logic)
+- common (Shared Utilities)
 
 Each module contains:
 

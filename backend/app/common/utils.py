@@ -36,6 +36,10 @@ def is_hod(user, department_id):
     if not is_hod_role:
         return False
         
+    # If department_id is None, just check if they are HOD of ANY department
+    if department_id is None:
+        return bool(user.department_hod_of)
+
     # Check actual department assignment
     # Using the relationship defined in Department model: user.department_hod_of
     if user.department_hod_of and user.department_hod_of.id == department_id:
@@ -47,3 +51,8 @@ def is_counsellor(user):
     if not user:
         return False
     return any(ur.role.name.lower() == 'counsellor' for ur in user.roles if ur.role)
+
+def is_advisor(user):
+    if not user:
+        return False
+    return any(ur.role.name.lower() == 'advisor' for ur in user.roles if ur.role)

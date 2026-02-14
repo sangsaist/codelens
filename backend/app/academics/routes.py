@@ -65,3 +65,27 @@ def get_department(dept_id):
         return error_response("Department not found", 404)
         
     return success_response(department.to_dict())
+
+@academics_bp.route("/departments/<dept_id>", methods=["DELETE"])
+@jwt_required()
+def delete_department(dept_id):
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+
+    if not is_admin(user):
+        return error_response("Admin access required", 403)
+
+    department = Department.query.get(dept_id)
+    if not department:
+        return error_response("Department not found", 404)
+
+    if department.students:
+        return error_response("Cannot delete department. Students are assigned.", 400)
+
+    try:
+        db.session.delete(department)
+        db.session.commit()
+        return success_response(None, "Department deleted successfully")
+    except Exception as e:
+        db.session.rollback()
+        return error_response(f"Failed to delete department: {str(e)}", 500)

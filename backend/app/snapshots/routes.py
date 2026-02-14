@@ -57,7 +57,8 @@ def create_snapshot():
         total_solved=total_solved,
         contest_rating=data.get("contest_rating"),
         global_rank=data.get("global_rank"),
-        snapshot_date=snapshot_date
+        snapshot_date=snapshot_date,
+        status="pending" # Default status, awaiting approval
     )
 
     try:

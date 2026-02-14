@@ -1,3 +1,4 @@
+
 import uuid
 from datetime import datetime
 from app.extensions import db
@@ -27,3 +28,14 @@ class Student(db.Model):
 
     user = db.relationship("User", backref=db.backref("student_profile", uselist=False))
     department = db.relationship("Department", backref="students")
+
+class StudentAdvisor(db.Model):
+    __tablename__ = "student_advisors"
+
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    student_id = db.Column(db.String(36), db.ForeignKey("students.id", ondelete="CASCADE"), unique=True, nullable=False)
+    advisor_user_id = db.Column(db.String(36), db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    assigned_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    student = db.relationship("Student", backref=db.backref("advisor_record", uselist=False))
+    advisor = db.relationship("User", backref="advised_students")

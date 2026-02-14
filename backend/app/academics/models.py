@@ -1,3 +1,4 @@
+
 import uuid
 from datetime import datetime
 from app.extensions import db
@@ -22,3 +23,13 @@ class Department(db.Model):
             "hod_id": self.hod_id,
             "created_at": self.created_at.isoformat()
         }
+
+class DepartmentCounsellor(db.Model):
+    __tablename__ = "department_counsellors"
+    
+    department_id = db.Column(db.String(36), db.ForeignKey("departments.id", ondelete="CASCADE"), primary_key=True)
+    counsellor_user_id = db.Column(db.String(36), db.ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    assigned_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    department = db.relationship("Department", backref=db.backref("counsellors"))
+    counsellor = db.relationship("User", backref="counsellor_of_departments")

@@ -18,6 +18,12 @@ class PlatformSnapshot(db.Model):
     snapshot_date = db.Column(db.Date, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    # Approval Workflow Fields
+    status = db.Column(db.String(20), default="pending", nullable=False)  # pending, approved, rejected
+    reviewed_by = db.Column(db.String(36), db.ForeignKey("users.id"), nullable=True)
+    reviewed_at = db.Column(db.DateTime, nullable=True)
+    remarks = db.Column(db.Text, nullable=True)
+
     __table_args__ = (
         db.UniqueConstraint('platform_account_id', 'snapshot_date', name='unique_platform_snapshot_date'),
     )
@@ -32,6 +38,8 @@ class PlatformSnapshot(db.Model):
         )
     )
 
+    reviewer = db.relationship("User", foreign_keys=[reviewed_by])
+
     def to_dict(self):
         return {
             "id": self.id,
@@ -40,5 +48,9 @@ class PlatformSnapshot(db.Model):
             "contest_rating": self.contest_rating,
             "global_rank": self.global_rank,
             "snapshot_date": self.snapshot_date.isoformat(),
-            "created_at": self.created_at.isoformat() if self.created_at else None
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "status": self.status,
+            "reviewed_by": self.reviewed_by,
+            "reviewed_at": self.reviewed_at.isoformat() if self.reviewed_at else None,
+            "remarks": self.remarks
         }

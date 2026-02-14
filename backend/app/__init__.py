@@ -1,11 +1,15 @@
 
 from flask import Flask
+from flask_cors import CORS
 from .config import Config
 from .extensions import db, migrate, jwt
 
 def create_app():
     flask_app = Flask(__name__)
     flask_app.config.from_object(Config)
+
+    # Initialize CORS
+    CORS(flask_app)
 
     db.init_app(flask_app)
     jwt.init_app(flask_app)
@@ -16,6 +20,7 @@ def create_app():
     import app.academics.models
     import app.platforms.models
     import app.snapshots.models
+    import app.staff.models # New Staff Profile Model
     # import app.analytics.models # Empty for now
 
     # Initialize Migrate after models are imported
@@ -43,6 +48,21 @@ def create_app():
     import app.setup.routes
     from app.setup.routes import setup_bp
     flask_app.register_blueprint(setup_bp)
+    
+    from app.advisor.routes import advisor_bp
+    flask_app.register_blueprint(advisor_bp)
+
+    from app.counsellor.routes import counsellor_bp
+    flask_app.register_blueprint(counsellor_bp)
+
+    from app.review.routes import review_bp
+    flask_app.register_blueprint(review_bp)
+
+    from app.staff.routes import staff_bp
+    flask_app.register_blueprint(staff_bp)
+
+    from app.admin.routes import admin_bp
+    flask_app.register_blueprint(admin_bp)
 
     @flask_app.route("/health")
     def health():

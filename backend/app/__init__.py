@@ -16,6 +16,7 @@ def create_app():
     import app.auth.models
     import app.students.models
     import app.academics.models
+    import app.platforms.models
 
     # Register blueprints
     from app.auth.routes import auth_bp
@@ -23,6 +24,9 @@ def create_app():
 
     from app.academics.routes import academics_bp
     flask_app.register_blueprint(academics_bp)
+
+    from app.platforms.routes import platforms_bp
+    flask_app.register_blueprint(platforms_bp)
 
     from flask_jwt_extended import jwt_required, get_jwt_identity
     

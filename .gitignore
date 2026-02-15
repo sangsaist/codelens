@@ -1,0 +1,22 @@
+# Environment variables (secrets)
+.env
+
+# Docker volumes
+postgres_data/
+redis_data/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# SSL certificates
+nginx/ssl/*.pem
+nginx/ssl/*.key
+nginx/ssl/*.crt
+
+# Temp/debug scripts
+backend/scripts/check_student.py

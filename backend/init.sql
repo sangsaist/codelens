@@ -1,0 +1,3 @@
+-- Database initialization script
+-- This file is mounted to /docker-entrypoint-initdb.d/init.sql
+-- Add any initial SQL commands here

@@ -2,18 +2,17 @@
 
 <div align="center">
 
-![CodeLens Banner](https://via.placeholder.com/1200x300/667eea/ffffff?text=CodeLens+-+Student+Coding+Performance+Analytics)
-
 **Open-Source Student Coding Performance Analytics Platform**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Flask 3.1.2](https://img.shields.io/badge/flask-3.1.2-green.svg)](https://flask.palletsprojects.com/)
 [![PostgreSQL 15](https://img.shields.io/badge/postgresql-15-blue.svg)](https://www.postgresql.org/)
-[![React 18.2](https://img.shields.io/badge/react-18.2-61dafb.svg)](https://reactjs.org/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![React 18](https://img.shields.io/badge/react-18-61dafb.svg)](https://reactjs.org/)
+[![Docker](https://img.shields.io/badge/docker-ready-2496ED.svg)](https://www.docker.com/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/sangsaist/codelens/pulls)
 
-[Features](#-features) • [Demo](#-demo) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Contributing](#-contributing) • [Roadmap](#-roadmap)
+[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Contributing](#-contributing)
 
 </div>
 
@@ -27,16 +26,12 @@
 - [Key Features](#-features)
 - [System Architecture](#-system-architecture)
 - [Technology Stack](#-technology-stack)
-- [Getting Started](#-getting-started)
-- [Data Import](#-bulk-data-import)
+- [Quick Start](#-quick-start)
 - [API Documentation](#-api-documentation)
 - [Security](#-security)
-- [Testing](#-testing)
-- [Deployment](#-deployment)
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
 - [License](#-license)
-- [Support](#-support)
 
 ---
 
@@ -52,7 +47,7 @@ Transform manual, inconsistent coding performance tracking into a **structured, 
 
 - **Self-Hosted**: Each college deploys its own instance
 - **Single-Tenant**: Complete data isolation per institution
-- **Scalable**: Handles 500-5000+ students per deployment
+- **Scalable**: Handles 500–5000+ students per deployment
 
 ---
 
@@ -138,13 +133,11 @@ This separation ensures **scalability**, **clarity**, and **long-term maintainab
 - 📊 View personal analytics and growth metrics
 - 🏅 See class/department rankings
 - 📅 Historical performance timeline
-- 🎯 Set goals and track improvement
 
 ### 👨‍🏫 **For Advisors**
 - 👀 Monitor assigned students' progress
 - ✅ Approve/reject performance snapshots
 - 📉 Identify struggling students early
-- 📧 Provide data-driven guidance
 - 📋 Batch approval workflows
 
 ### 🧑‍💼 **For Counsellors**
@@ -152,13 +145,11 @@ This separation ensures **scalability**, **clarity**, and **long-term maintainab
 - 📊 Comparative performance analysis
 - 🎯 Identify at-risk students
 - 📈 Track cohort improvement
-- 📑 Generate reports
 
 ### 👔 **For HODs**
 - 🏛️ Department management
-- 👥 Staff assignment
+- 👥 Staff & student assignment
 - 📊 Department-level insights
-- 🎯 Strategic decision support
 - 📈 Placement readiness tracking
 
 ### 🛡️ **For Admins**
@@ -166,7 +157,6 @@ This separation ensures **scalability**, **clarity**, and **long-term maintainab
 - 👤 User management
 - 🏢 Department setup
 - 🔍 Institution-wide analytics
-- 📊 Cross-department comparisons
 
 ---
 
@@ -195,24 +185,6 @@ This separation ensures **scalability**, **clarity**, and **long-term maintainab
 │                  Database Layer (PostgreSQL)                 │
 │  Users • Students • Departments • Snapshots • Analytics     │
 └─────────────────────────────────────────────────────────────┘
-```
-
-### **Modular Blueprint Design**
-
-```
-backend/app/
-├── 🔐 auth/           Authentication & authorization
-├── 👨‍🎓 students/      Student profile management
-├── 🏢 academics/      Department hierarchy
-├── 🔗 platforms/      Coding platform integration
-├── 📸 snapshots/      Performance data capture
-├── 📊 analytics/      Metrics computation
-├── 👨‍🏫 advisor/       Advisor operations
-├── 🧑‍💼 counsellor/    Counsellor operations
-├── 👔 admin/          System administration
-├── ✅ review/         Approval workflow
-├── 👥 staff/          Staff management
-└── 🛠️ common/         Shared utilities
 ```
 
 ### **Data Flow**
@@ -259,283 +231,105 @@ sequenceDiagram
 
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Docker Compose](https://img.shields.io/badge/Docker_Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 
 </div>
 
-### **Detailed Stack**
-
-| Layer | Technology | Version | Purpose |
-|-------|-----------|---------|---------|
-| **Runtime** | Python | 3.10+ | Server-side language |
-| **Framework** | Flask | 3.1.2 | Web application framework |
-| **Database** | PostgreSQL | 15 | Relational data storage |
-| **ORM** | SQLAlchemy | 2.0.46 | Database abstraction |
-| **Migration** | Alembic | 1.18.4 | Schema versioning |
-| **Authentication** | Flask-JWT-Extended | 4.7.1 | JWT token management |
-| **Password Security** | bcrypt | 4.0.1 | Password hashing |
-| **CORS** | Flask-CORS | 6.0.2 | Cross-origin requests |
-| **Frontend Framework** | React | 18.2.0 | UI library |
-| **Build Tool** | Vite | 5.1.4 | Fast bundler |
-| **Styling** | Tailwind CSS | 3.4.1 | Utility-first CSS |
-| **Charts** | Recharts | 2.12.0 | Data visualization |
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Runtime** | Python 3.10+ | Server-side language |
+| **Framework** | Flask 3.1.2 | Web application framework |
+| **Database** | PostgreSQL 15 | Relational data storage |
+| **ORM** | SQLAlchemy 2.0 | Database abstraction |
+| **Migration** | Alembic | Schema versioning |
+| **Auth** | Flask-JWT-Extended | JWT token management |
+| **Password** | bcrypt | Password hashing |
+| **Frontend** | React 18 + Vite | UI library + build tool |
+| **Styling** | Tailwind CSS | Utility-first CSS |
+| **Charts** | Recharts | Data visualization |
+| **Container** | Docker + Compose | Containerized deployment |
+| **Proxy** | Nginx | Reverse proxy (production) |
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
-### **Prerequisites**
-
-```bash
-# Required
-✓ Docker Desktop (20.10+)
-✓ Docker Compose (2.0+)
-✓ Git
-
-# Optional (for local development)
-✓ Python 3.10+
-✓ Node.js 18+
-```
-
-### **Quick Start (5 Minutes)**
+### **Option 1: Docker (Recommended) — 5 Minutes**
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/sangsaist/codelens.git
 cd codelens
 
-# 2. Start the services
-docker-compose up --build
+# 2. Configure environment
+cp .env.example .env
+# Edit .env with your settings (DB password, JWT secret, etc.)
 
-# 3. Initialize database (in another terminal)
-docker-compose exec backend flask db upgrade
+# 3. Start all services
+docker-compose -f docker-compose.dev.yml up -d --build
 
-# 4. Seed default roles
-docker-compose exec backend flask shell
->>> from app.auth.seed import seed_roles
->>> seed_roles()
->>> exit()
+# 4. Initialize database
+docker-compose -f docker-compose.dev.yml exec backend flask db upgrade
 
-# 5. Access the application
-# Backend API: http://localhost:5000
-# Health Check: http://localhost:5000/health
+# 5. Seed roles
+docker-compose -f docker-compose.dev.yml exec backend python -c \
+  "from app import create_app; from app.auth.seed import seed_roles; app = create_app(); app.app_context().push(); seed_roles()"
+
+# 6. Generate & import test data
+docker-compose -f docker-compose.dev.yml exec backend python scripts/generate_all_data.py
+docker-compose -f docker-compose.dev.yml exec backend python scripts/seed_data.py
+
+# 7. Open the app
+# Frontend: http://localhost:5173
+# Backend:  http://localhost:5000
 ```
 
-### **Development Setup**
+### **Option 2: Manual Setup**
 
-<details>
-<summary><strong>📦 Backend Setup</strong></summary>
+See the full [Setup Guide](docs/SETUP.md) for step-by-step manual installation.
 
-```bash
-cd backend
+### **Default Credentials**
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | `admin@college.edu` | `Admin@12345` |
+| HOD (CSE) | `hod.cse@college.edu` | `Hod@12345` |
+| Student | See `backend/data/students.csv` | `Student@123` |
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Set environment variables
-export DATABASE_URL="postgresql://postgres:postgres@localhost:5432/codelens"
-export JWT_SECRET_KEY="your-secret-key-here"
-export FLASK_APP=run.py
-export FLASK_ENV=development
-
-# Initialize database
-flask db upgrade
-
-# Seed roles
-python -c "from app import create_app; from app.auth.seed import seed_roles; app = create_app(); app.app_context().push(); seed_roles()"
-
-# Run development server
-flask run
-```
-
-</details>
-
-<details>
-<summary><strong>🎨 Frontend Setup</strong></summary>
-
-```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Set environment variables
-echo "VITE_API_URL=http://localhost:5000" > .env
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-```
-
-</details>
-
----
-
-## 📥 Bulk Data Import
-
-**Problem:** Manual entry of 1000+ students is impractical.  
-**Solution:** Automated CSV import with test data generation.
-
-### **Step 1: Generate Test Data**
-
-```bash
-cd backend
-
-# Install faker library
-pip install faker
-
-# Generate 900+ users with realistic data
-python generate_all_data.py
-```
-
-**Output:**
-```
-✅ Generated 6 departments
-✅ Generated 900 students
-✅ Generated 6 HODs
-✅ Generated 12 counsellors
-✅ Generated 30 advisors
-✅ Generated 1 admin
-─────────────────────────
-TOTAL: 949 users
-```
-
-### **Step 2: Import to Database**
-
-```bash
-python seed_data.py
-```
-
-### **Step 3: Login & Test**
-
-```
-Admin:       admin@college.edu / Admin@12345
-HOD (CSE):   hod.cse@college.edu / Hod@12345
-Counsellor:  counsellor.cse1@college.edu / Counsel@123
-Student:     (see data/students.csv) / Student@123
-```
-
-### **Custom Data Import**
-
-Create your own CSV files using these templates:
-
-<details>
-<summary><strong>📋 CSV Templates</strong></summary>
-
-**departments.csv**
-```csv
-name,code
-Computer Science and Engineering,CSE
-Electronics and Communication Engineering,ECE
-```
-
-**students.csv**
-```csv
-email,full_name,register_number,department_code,admission_year,phone,gender,password
-alice@college.edu,Alice Johnson,CS2024001,CSE,2024,9876543210,Female,Student@123
-bob@college.edu,Bob Smith,CS2024002,CSE,2024,9876543211,Male,Student@123
-```
-
-**hods.csv**
-```csv
-email,full_name,department_code,password
-hod.cse@college.edu,Dr. John Doe,CSE,Hod@12345
-```
-
-</details>
-
-**Import Custom Data:**
-```bash
-python seed_data.py
-```
+> 📝 Student emails are randomly generated. Check `backend/data/students.csv` for exact emails.
 
 ---
 
 ## 📚 API Documentation
 
-### **Authentication Endpoints**
+### **Core Endpoints**
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
 | `POST` | `/auth/register` | Register new user | No |
 | `POST` | `/auth/login` | Login and receive JWT | No |
-| `GET` | `/auth/me` | Get current user info | Yes |
-
-### **Student Endpoints**
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/students/profile` | Get own profile | Student+ |
-| `PUT` | `/students/profile` | Update profile | Student+ |
-| `GET` | `/students/<id>` | Get student by ID | Advisor+ |
-
-### **Snapshot Endpoints**
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `POST` | `/snapshots/submit` | Submit performance snapshot | Student+ |
-| `GET` | `/snapshots/my-snapshots` | Get own snapshots | Student+ |
-| `GET` | `/snapshots/pending` | Get pending reviews | Advisor+ |
-
-### **Review Endpoints**
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `POST` | `/review/snapshot/<id>` | Approve/reject snapshot | Advisor+ |
-| `GET` | `/review/pending` | Get review queue | Advisor+ |
-
-### **Analytics Endpoints**
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/analytics/student/<id>` | Student analytics | Student+ |
-| `GET` | `/analytics/department/<id>` | Department analytics | HOD+ |
-
-### **Leaderboard Endpoints**
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/leaderboard/class/<id>` | Class leaderboard | Student+ |
-| `GET` | `/leaderboard/department/<id>` | Department leaderboard | Student+ |
+| `GET` | `/analytics/my-summary` | Student dashboard data | Student+ |
+| `GET` | `/analytics/institution-summary` | Institution overview | Admin/HOD |
+| `GET` | `/platforms/my` | Linked platform accounts | Student+ |
+| `POST` | `/platforms/link` | Link coding platform | Student+ |
+| `POST` | `/snapshots` | Submit performance snapshot | Student+ |
+| `GET` | `/counsellor/pending-snapshots` | Review queue | Advisor+ |
+| `PUT` | `/counsellor/snapshots/<id>/approve` | Approve snapshot | Advisor+ |
+| `POST` | `/staff/create` | Create staff member | Admin/HOD |
+| `GET` | `/staff/my-team` | View team hierarchy | Staff+ |
+| `GET` | `/academics/departments` | List departments | Any |
 
 <details>
 <summary><strong>📖 API Request/Response Examples</strong></summary>
-
-**Register User:**
-```bash
-curl -X POST http://localhost:5000/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "student@college.edu",
-    "password": "SecurePass@123",
-    "full_name": "John Doe"
-  }'
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "message": "User registered successfully",
-  "data": {
-    "user_id": "550e8400-e29b-41d4-a716-446655440000"
-  }
-}
-```
 
 **Login:**
 ```bash
 curl -X POST http://localhost:5000/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "student@college.edu",
-    "password": "SecurePass@123"
+    "email": "admin@college.edu",
+    "password": "Admin@12345"
   }'
 ```
 
@@ -548,9 +342,9 @@ curl -X POST http://localhost:5000/auth/login \
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "user": {
       "id": "550e8400-e29b-41d4-a716-446655440000",
-      "email": "student@college.edu",
-      "full_name": "John Doe",
-      "roles": ["student"]
+      "email": "admin@college.edu",
+      "full_name": "System Administrator",
+      "roles": ["admin"]
     }
   }
 }
@@ -562,383 +356,145 @@ curl -X POST http://localhost:5000/auth/login \
 
 ## 🔒 Security
 
-### **Security Features**
-
-- ✅ **JWT Authentication**: Stateless, token-based authentication
-- ✅ **Password Hashing**: PBKDF2-SHA256 with salt (bcrypt backend)
-- ✅ **Role-Based Access Control**: 5-tier hierarchical permissions
-- ✅ **SQL Injection Prevention**: SQLAlchemy ORM parameterized queries
-- ✅ **CORS Protection**: Configurable origin restrictions
-- ✅ **Input Validation**: Multi-layer validation strategy
-
-### **Security Checklist for Production**
+- ✅ **JWT Authentication** – Stateless, token-based auth
+- ✅ **Password Hashing** – bcrypt with salt
+- ✅ **Role-Based Access Control** – 5-tier hierarchical permissions (Admin → HOD → Counsellor → Advisor → Student)
+- ✅ **SQL Injection Prevention** – SQLAlchemy ORM parameterized queries
+- ✅ **CORS Protection** – Configurable origin restrictions
+- ✅ **Non-root Docker containers** – Least-privilege execution
+- ✅ **Secrets via environment variables** – No hardcoded credentials in code
 
 <details>
-<summary><strong>⚠️ Critical Security Steps</strong></summary>
+<summary><strong>⚠️ Production Security Checklist</strong></summary>
 
-- [ ] **Change JWT Secret**: Generate cryptographically random key
-  ```bash
-  export JWT_SECRET_KEY=$(openssl rand -hex 32)
-  ```
-
-- [ ] **Restrict CORS**: Limit to institution domain
-  ```python
-  CORS(app, origins=["https://codelens.college.edu"])
-  ```
-
-- [ ] **Enable HTTPS**: Use TLS 1.2+ with valid certificate
-
-- [ ] **Implement Rate Limiting**: Prevent brute force attacks
-  ```bash
-  pip install flask-limiter
-  ```
-
-- [ ] **Sanitize Error Messages**: Don't expose internal details
-
-- [ ] **Add Password Policy**: Enforce complexity requirements
-
-- [ ] **Enable Audit Logging**: Track sensitive operations
-
-- [ ] **Database User Permissions**: Limit to necessary operations
-
-- [ ] **Regular Security Updates**: Keep dependencies patched
+- [ ] Generate strong JWT secret: `openssl rand -hex 32`
+- [ ] Set strong database password
+- [ ] Restrict CORS to your institution's domain
+- [ ] Configure HTTPS with valid SSL certificates
+- [ ] Implement rate limiting (Flask-Limiter)
+- [ ] Enable audit logging
+- [ ] Set up database backups
+- [ ] Keep dependencies updated
 
 </details>
-
-### **Known Security Considerations (v1.0 MVP)**
-
-| Issue | Status | Production Mitigation |
-|-------|--------|----------------------|
-| Hardcoded JWT secret in docker-compose | 🔴 Dev Only | Use environment variables |
-| No rate limiting | 🔴 Missing | Implement Flask-Limiter |
-| CORS allows all origins | 🔴 Dev Only | Restrict to domain |
-| No password complexity rules | 🟡 Missing | Add validation |
-| No email verification | 🟡 Missing | Implement in v1.5 |
-| JWT tokens in localStorage | 🟢 Acceptable | XSS prevention via CSP |
-
----
-
-## 🧪 Testing
-
-### **Run Tests**
-
-```bash
-cd backend
-
-# Run all tests
-python -m pytest tests/
-
-# Run specific test
-python -m pytest tests/test_snapshot_approval.py
-
-# Run with coverage
-python -m pytest --cov=app tests/
-```
-
-### **Current Test Coverage**
-
-```
-Module                Coverage
-────────────────────────────
-app.auth              ⬜⬜⬜⬜⬜ 5%
-app.students          ⬜⬜⬜⬜⬜ 0%
-app.snapshots         ⬜⬜⬜⬜⬛ 15%
-app.analytics         ⬜⬜⬜⬜⬜ 0%
-────────────────────────────
-Overall               ⬜⬜⬜⬜⬜ 5%
-```
-
-**Note:** Testing infrastructure is minimal in v1.0 MVP. Comprehensive test suite planned for v1.5.
-
----
-
-## 🚢 Deployment
-
-### **Docker Deployment (Recommended)**
-
-```bash
-# Production docker-compose configuration
-version: '3.9'
-
-services:
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: codelens
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    restart: always
-
-  backend:
-    build: ./backend
-    environment:
-      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/codelens
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
-      FLASK_ENV: production
-    depends_on:
-      - db
-    restart: always
-
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./ssl:/etc/nginx/ssl
-    depends_on:
-      - backend
-    restart: always
-
-volumes:
-  pgdata:
-```
-
-### **Environment Variables**
-
-Create `.env` file:
-```bash
-# Database
-DB_USER=codelens_user
-DB_PASSWORD=<strong-password>
-
-# Security
-JWT_SECRET_KEY=<cryptographic-random-key>
-
-# Application
-FLASK_ENV=production
-ALLOWED_ORIGINS=https://codelens.college.edu
-```
-
-### **Production Checklist**
-
-- [ ] Set strong database password
-- [ ] Generate cryptographic JWT secret
-- [ ] Configure HTTPS/SSL certificates
-- [ ] Set up firewall rules
-- [ ] Configure backup strategy
-- [ ] Enable monitoring/logging
-- [ ] Set up health checks
-- [ ] Configure auto-restart policies
-- [ ] Document recovery procedures
 
 ---
 
 ## 🗺️ Roadmap
 
-<div align="center">
+> **Project started:** February 2025 — currently in active development.
 
-### **Version History & Future Plans**
+### ✅ **v1.0 – Foundation** (Current)
 
-</div>
-
-```mermaid
-gantt
-    title CodeLens Development Roadmap
-    dateFormat  YYYY-MM
-    section v1.0
-    Foundation Release           :done, 2024-01, 2024-06
-    section v1.5
-    Platform Sync Engine         :active, 2024-07, 2024-12
-    section v2.0
-    Advanced Analytics           :2025-01, 2025-06
-    section v2.5
-    Performance Optimization     :2025-07, 2025-12
-    section v3.0
-    Intelligent Insights         :2026-01, 2026-06
-```
-
-### **v1.0 – Foundation Release** ✅ (In Development)
-
-<table>
-<tr><td>
-
-**Completed:**
-- ✅ JWT Authentication
-- ✅ Role-based access control
-- ✅ Academic hierarchy
+- ✅ JWT authentication & role-based access control
+- ✅ 5-tier role hierarchy (Admin, HOD, Counsellor, Advisor, Student)
+- ✅ Department & academic structure management
 - ✅ Student profile management
-- ✅ Manual snapshot entry
-- ✅ Approval workflow
-- ✅ Basic analytics (growth metrics)
+- ✅ Manual performance snapshot entry
+- ✅ Snapshot approval workflow
+- ✅ Basic analytics & growth metrics
 - ✅ Leaderboard generation
-- ✅ Docker deployment
+- ✅ React frontend with role-based dashboards
+- ✅ Docker dev & production deployment
+- ✅ Bulk data import via CSV
+- 🚧 HOD student-to-advisor assignment (in progress)
 
-</td><td>
+### 🔜 **v1.5 – Platform Integration** (Planned)
 
-**In Progress:**
-- 🚧 Frontend integration
-- 🚧 Email notifications
-- 🚧 Advanced reporting
-- 🚧 Historical data migration
+- 🔄 Automated LeetCode data sync
+- 🔄 Automated GitHub activity tracking
+- 🔄 Background job processing (Celery/Redis)
+- 🔄 Snapshot auto-generation from synced data
+- 🔄 Email notifications
 
-</td></tr>
-</table>
+### 📊 **v2.0 – Advanced Analytics** (Planned)
 
-### **v1.5 – Platform Sync Engine** 🔄 (Planned: Q3 2024)
-
-- 🔄 Automated LeetCode integration
-- 🔄 Automated GitHub integration
-- 🔄 Background job processing (Celery)
-- 🔄 Sync status tracking
-- 🔄 Snapshot auto-generation
-- 🔄 Bulk approval interface
-
-### **v2.0 – Advanced Analytics** 📊 (Planned: Q1 2025)
-
-- 📊 Readiness scoring model
-- 📊 Risk-level detection
+- 📊 Placement readiness scoring
+- 📊 At-risk student detection
 - 📊 Performance trend visualization
-- 📊 Department/batch analytics
-- 📊 Comparative analysis
+- 📊 Department comparative analysis
 - 📊 Custom report builder
 
-### **v2.5 – Performance Optimization** ⚡ (Planned: Q3 2025)
+### 🤖 **v3.0 – Intelligent Insights** (Future)
 
-- ⚡ Query optimization
-- ⚡ Materialized views
-- ⚡ Redis caching layer
-- ⚡ Database partitioning
-- ⚡ Read replicas
-- ⚡ CDN integration
-
-### **v3.0 – Intelligent Insights** 🤖 (Planned: Q1 2026)
-
-- 🤖 Placement prediction modeling
+- 🤖 Personalized learning recommendations
+- 🤖 Predictive analytics
 - 🤖 Smart mentoring suggestions
 - 🤖 Automated risk alerts
-- 🤖 Custom scoring models
-- 🤖 AI-powered recommendations
-- 🤖 Predictive analytics
+
+---
+
+## 📁 Project Structure
+
+```text
+codelens/
+├── backend/
+│   ├── app/
+│   │   ├── auth/           # Login, Register, Roles
+│   │   ├── staff/          # Staff Profiles (HOD, Advisor, Counsellor)
+│   │   ├── academics/      # Departments & Batches
+│   │   ├── students/       # Student Profiles
+│   │   ├── platforms/      # External Account Linking
+│   │   ├── snapshots/      # Progress Tracking
+│   │   ├── analytics/      # Data Aggregation
+│   │   ├── counsellor/     # Review Dashboards
+│   │   ├── review/         # Approval Logic
+│   │   ├── common/         # Utilities (RBAC, Responses)
+│   │   ├── setup/          # Bootstrapping Scripts
+│   │   └── __init__.py     # App Factory
+│   ├── scripts/            # Data generation & seeding
+│   ├── migrations/         # Alembic DB migrations
+│   ├── data/               # Generated CSV test data
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── run.py
+├── frontend/
+│   ├── src/
+│   │   ├── api/            # Axios API clients
+│   │   ├── context/        # React context (Auth)
+│   │   ├── hooks/          # Custom hooks
+│   │   ├── pages/          # Page components
+│   │   ├── routes/         # Route definitions
+│   │   └── utils/          # Utility functions
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   └── package.json
+├── nginx/                  # Reverse proxy (production)
+├── docs/                   # Documentation
+├── docker-compose.dev.yml  # Development environment
+├── docker-compose.prod.yml # Production environment
+├── .env.example            # Environment template
+└── .gitignore
+```
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions from the community! Whether it's bug reports, feature requests, or code contributions, your input helps make CodeLens better.
+Contributions are welcome! Whether it's bug reports, feature requests, or code — your input helps make CodeLens better.
 
-### **How to Contribute**
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/your-feature`
+3. **Commit** your changes: `git commit -m 'feat: Add your feature'`
+4. **Push** to the branch: `git push origin feature/your-feature`
+5. **Open** a Pull Request
 
-1. **Fork the Repository**
-   ```bash
-   git clone https://github.com/sangsaist/codelens.git
-   cd codelens
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make Your Changes**
-   - Follow the existing code style
-   - Add tests for new features
-   - Update documentation as needed
-
-3. **Submit a Pull Request**
-   - Provide clear description of changes
-   - Reference any related issues
-   - Ensure CI/CD checks pass
-
-### **Contribution Guidelines**
-
-- 📖 Read [CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed guidelines
 - 🐛 Report bugs via [GitHub Issues](https://github.com/sangsaist/codelens/issues)
-- 💡 Suggest features via [Discussions](https://github.com/sangsaist/codelens/discussions)
-- 📚 Improve documentation
-- 🧪 Add test coverage
-
-### **Code of Conduct**
-
-We are committed to providing a welcoming and inclusive environment. Please be respectful and considerate in all interactions.
+- 💡 Suggest features via [GitHub Discussions](https://github.com/sangsaist/codelens/discussions)
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2024 CodeLens Contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files...
-```
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 💬 Support
+## 📖 Documentation
 
-### **Documentation**
-
-- 📖 [Architecture Documentation](docs/ARCHITECTURE.md)
-- 🚀 [Setup Guide](docs/SETUP.md)
-- 🎨 [Frontend Guide](docs/FRONTEND.md)
-- 🗺️ [Roadmap](docs/ROADMAP.md)
-
-### **Get Help**
-
-- 💬 [GitHub Discussions](https://github.com/sangsaist/codelens/discussions) - Ask questions
-- 🐛 [GitHub Issues](https://github.com/sangsaist/codelens/issues) - Report bugs
-- 📧 Email: support@codelens.dev (Coming Soon)
-
-### **Community**
-
-- 🌟 Star this repo to show support
-- 👀 Watch for updates
-- 🍴 Fork for your institution
-
----
-
-## 🎯 Project Status
-
-<div align="center">
-
-### **Current Status: MVP - 70% Complete**
-
-| Component | Status | Progress |
-|-----------|--------|----------|
-| Backend API | ✅ Functional | ████████░░ 80% |
-| Database Schema | ✅ Complete | ██████████ 100% |
-| Authentication | ✅ Production Ready | ██████████ 100% |
-| Authorization | ✅ Production Ready | ██████████ 100% |
-| Analytics Engine | ✅ Functional | ███████░░░ 70% |
-| Frontend Integration | 🚧 In Progress | ████░░░░░░ 40% |
-| Testing | 🚧 Limited | █░░░░░░░░░ 10% |
-| Documentation | ✅ Comprehensive | ████████░░ 80% |
-
-**Overall: 70% Complete - Production Deployment Ready with Hardening**
-
-</div>
-
----
-
-## 🌟 Acknowledgments
-
-Special thanks to all contributors who have helped shape CodeLens:
-
-- Educational institutions providing feedback
-- Open-source community for excellent libraries
-- Early adopters testing the platform
-- Contributors submitting PRs and issues
-
----
-
-## 📊 Project Statistics
-
-<div align="center">
-
-![GitHub stars](https://img.shields.io/github/stars/sangsaist/codelens?style=social)
-![GitHub forks](https://img.shields.io/github/forks/sangsaist/codelens?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/sangsaist/codelens?style=social)
-
-![GitHub issues](https://img.shields.io/github/issues/sangsaist/codelens)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/sangsaist/codelens)
-![GitHub last commit](https://img.shields.io/github/last-commit/sangsaist/codelens)
-![GitHub repo size](https://img.shields.io/github/repo-size/sangsaist/codelens)
-
-</div>
+- 📐 [Architecture](docs/ARCHITECTURE.md) – System design & data flow
+- ⚙️ [Setup Guide](docs/SETUP.md) – Docker & manual installation
+- 🎨 [Frontend Guide](docs/FRONTEND.md) – React components & pages
 
 ---
 
@@ -952,6 +508,6 @@ Special thanks to all contributors who have helped shape CodeLens:
 
 ---
 
-<sub>© 2024 CodeLens. Open Source Project under MIT License.</sub>
+<sub>© 2025 CodeLens. Open Source Project under MIT License.</sub>
 
 </div>

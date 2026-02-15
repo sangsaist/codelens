@@ -42,3 +42,7 @@ htmlcov/
 
 # Flask instance folder
 instance/
+
+# Generated Test Data
+data/*.csv
+data/SUMMARY.txt

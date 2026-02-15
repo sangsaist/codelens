@@ -2,7 +2,7 @@
 from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.extensions import db
-from app.students.models import Student
+from app.students.models import Student, StudentCounsellor
 from app.academics.models import Department, DepartmentCounsellor
 from app.platforms.models import PlatformAccount
 from app.snapshots.models import PlatformSnapshot
@@ -30,11 +30,12 @@ def get_counsellor_summary():
         return error_response("Access Denied. Counsellor role required.", 403)
         
     department = get_assigned_department(current_user_id)
-    if not department:
-        return error_response("No department assigned to this counsellor.", 404)
+    department_name = department.name if department else "Unknown Dept"
         
-    # Get students in this department
-    students = Student.query.filter_by(department_id=department.id).all()
+    # Get students assigned to this counsellor
+    # students = Student.query.filter_by(department_id=department.id).all() # OLD
+    students = Student.query.join(StudentCounsellor).filter(StudentCounsellor.counsellor_user_id == current_user_id).all()
+    
     total_students = len(students)
     
     total_solved = 0
@@ -73,8 +74,8 @@ def get_counsellor_summary():
     avg_growth = round(total_growth / total_students, 2) if total_students > 0 else 0
     
     return success_response({
-        "department_name": department.name,
-        "total_students": total_students,
+        "department_name": department_name,
+        "total_students": total_students, # Assigned students count
         "total_solved": total_solved,
         "average_growth": avg_growth,
         "at_risk_count": at_risk_count
@@ -82,18 +83,15 @@ def get_counsellor_summary():
 
 @counsellor_bp.route("/students", methods=["GET"])
 @jwt_required()
-def get_department_students():
+def get_my_students():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     
     if not is_counsellor(user):
         return error_response("Access Denied", 403)
         
-    department = get_assigned_department(current_user_id)
-    if not department:
-        return error_response("No department assigned", 404)
-        
-    students = Student.query.filter_by(department_id=department.id).all()
+    # Filter by assignment
+    students = Student.query.join(StudentCounsellor).filter(StudentCounsellor.counsellor_user_id == current_user_id).all()
     
     data = []
     cutoff_date = datetime.utcnow().date() - timedelta(days=30)
@@ -127,6 +125,7 @@ def get_department_students():
         data.append({
             "student_id": student.id,
             "full_name": student.user.full_name,
+            "register_number": student.register_number,
             "total_solved": total_solved,
             "growth": growth,
             "last_active": last_active.isoformat() if last_active else "Never",
@@ -144,11 +143,8 @@ def get_at_risk_only():
     if not is_counsellor(user):
         return error_response("Access Denied", 403)
         
-    department = get_assigned_department(current_user_id)
-    if not department:
-        return error_response("No department assigned", 404)
-        
-    students = Student.query.filter_by(department_id=department.id).all()
+    students = Student.query.join(StudentCounsellor).filter(StudentCounsellor.counsellor_user_id == current_user_id).all()
+    
     at_risk_data = []
     cutoff_date = datetime.utcnow().date() - timedelta(days=30)
     

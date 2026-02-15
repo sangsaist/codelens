@@ -39,3 +39,14 @@ class StudentAdvisor(db.Model):
 
     student = db.relationship("Student", backref=db.backref("advisor_record", uselist=False))
     advisor = db.relationship("User", backref="advised_students")
+
+class StudentCounsellor(db.Model):
+    __tablename__ = "student_counsellors"
+
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    student_id = db.Column(db.String(36), db.ForeignKey("students.id", ondelete="CASCADE"), unique=True, nullable=False)
+    counsellor_user_id = db.Column(db.String(36), db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    assigned_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    student = db.relationship("Student", backref=db.backref("counsellor_record", uselist=False))
+    counsellor = db.relationship("User", backref="counselled_students")

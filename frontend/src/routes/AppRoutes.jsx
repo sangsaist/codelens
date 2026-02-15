@@ -1,3 +1,4 @@
+
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from '../context/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
@@ -6,6 +7,7 @@ import Register from '../pages/Register'
 import StudentDashboard from '../pages/StudentDashboard'
 import AdminPanel from '../pages/AdminPanel'
 import InstitutionDashboard from '../pages/InstitutionDashboard'
+import HODStudentManagement from '../pages/HODStudentManagement'
 import AdvisorDashboard from '../pages/AdvisorDashboard'
 import AdvisorStudentDetail from '../pages/AdvisorStudentDetail'
 import CounsellorDashboard from '../pages/CounsellorDashboard'
@@ -70,6 +72,14 @@ const AppRoutes = () => {
                     element={
                         <ProtectedRoute allowedRoles={['hod']}>
                             <InstitutionDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/department/students"
+                    element={
+                        <ProtectedRoute allowedRoles={['hod']}>
+                            <HODStudentManagement />
                         </ProtectedRoute>
                     }
                 />

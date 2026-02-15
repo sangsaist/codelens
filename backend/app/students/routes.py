@@ -5,7 +5,7 @@ from app.extensions import db
 from app.students.models import Student
 from app.academics.models import Department
 from app.auth.models import User
-from app.common.utils import success_response, error_response, is_admin
+from app.common.utils import success_response, error_response, is_admin, is_hod
 
 students_bp = Blueprint("students_bp", __name__, url_prefix="/students")
 
@@ -15,17 +15,33 @@ def get_all_students():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     
-    # Check Admin Role
-    if not is_admin(user):
-        return error_response("Access denied. Admin role required.", 403)
+    # Logic: Admin sees all. HOD sees own dept.
+    query = db.session.query(Student, User).join(User, Student.user_id == User.id)
+    
+    if is_admin(user):
+        pass # No filter
+    elif is_hod(user, None): # Check if HOD of any dept
+        if not user.department_hod_of:
+             return error_response("HOD has no department assigned", 400)
+        query = query.filter(Student.department_id == user.department_hod_of.id)
+    else:
+        return error_response("Access denied. Admin or HOD role required.", 403)
     
     try:
-        # Join User to get names
-        students = db.session.query(Student, User).join(User, Student.user_id == User.id).all()
+        students = query.all()
         
         response_data = []
         for student, user in students:
             dept_name = student.department.name if student.department else None
+            
+            advisor_name = "Unassigned"
+            if student.advisor_record and student.advisor_record.advisor:
+                advisor_name = student.advisor_record.advisor.full_name
+                
+            counsellor_name = "Unassigned"
+            if student.counsellor_record and student.counsellor_record.counsellor:
+                counsellor_name = student.counsellor_record.counsellor.full_name
+
             response_data.append({
                 "id": student.id,
                 "full_name": user.full_name,
@@ -33,7 +49,9 @@ def get_all_students():
                 "register_number": student.register_number,
                 "admission_year": student.admission_year,
                 "department_id": student.department_id,
-                "department_name": dept_name
+                "department_name": dept_name,
+                "advisor_name": advisor_name,
+                "counsellor_name": counsellor_name
             })
             
         return success_response(response_data, "Students fetched successfully")

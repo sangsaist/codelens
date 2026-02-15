@@ -5,7 +5,7 @@ from datetime import datetime
 from app.extensions import db
 from app.snapshots.models import PlatformSnapshot
 from app.platforms.models import PlatformAccount
-from app.students.models import Student
+from app.students.models import Student, StudentCounsellor
 from app.academics.models import Department, DepartmentCounsellor
 from app.auth.models import User
 from app.common.utils import success_response, error_response, is_counsellor
@@ -28,11 +28,9 @@ def get_pending_snapshots():
         return error_response("Access denied. Counsellor role required.", 403)
         
     department = get_assigned_department(current_user_id)
-    if not department:
-        return error_response("No department assigned to this counsellor.", 404)
+    # Even if department is missing, we rely on StudentCounsellor assignment now.
         
-    # Get all pending snapshots for students in this department
-    # Join: Snapshot -> Account -> Student -> Filter by Department
+    # Get all pending snapshots for assigned students
     pending_snapshots = db.session.query(
         PlatformSnapshot.id,
         PlatformSnapshot.total_solved,
@@ -46,9 +44,10 @@ def get_pending_snapshots():
     ).join(PlatformAccount, PlatformSnapshot.platform_account_id == PlatformAccount.id)\
      .join(Student, PlatformAccount.student_id == Student.id)\
      .join(User, Student.user_id == User.id)\
+     .join(StudentCounsellor, Student.id == StudentCounsellor.student_id)\
      .filter(
          PlatformSnapshot.status == "pending",
-         Student.department_id == department.id
+         StudentCounsellor.counsellor_user_id == current_user_id
      ).order_by(PlatformSnapshot.created_at.desc()).all()
      
     data = []
@@ -76,18 +75,19 @@ def approve_snapshot(snapshot_id):
     if not is_counsellor(user):
         return error_response("Access denied.", 403)
         
-    department = get_assigned_department(current_user_id)
-    if not department:
-        return error_response("No department assigned.", 404)
-        
     snapshot = PlatformSnapshot.query.get(snapshot_id)
     if not snapshot:
         return error_response("Snapshot not found", 404)
         
-    # Verify snapshot belongs to student in counsellor's department
+    # Verify assignment
     student = snapshot.platform_account.student
-    if student.department_id != department.id:
-        return error_response("Unauthorized. Snapshot does not belong to your department.", 403)
+    assignment = StudentCounsellor.query.filter_by(
+        student_id=student.id,
+        counsellor_user_id=current_user_id
+    ).first()
+    
+    if not assignment:
+        return error_response("Unauthorized. Student is not assigned to you.", 403)
         
     if snapshot.status != "pending":
         return error_response(f"Snapshot is already {snapshot.status}", 400)
@@ -112,17 +112,18 @@ def reject_snapshot(snapshot_id):
     if not is_counsellor(user):
         return error_response("Access denied.", 403)
         
-    department = get_assigned_department(current_user_id)
-    if not department:
-        return error_response("No department assigned.", 404)
-        
     snapshot = PlatformSnapshot.query.get(snapshot_id)
     if not snapshot:
         return error_response("Snapshot not found", 404)
         
     student = snapshot.platform_account.student
-    if student.department_id != department.id:
-        return error_response("Unauthorized.", 403)
+    assignment = StudentCounsellor.query.filter_by(
+        student_id=student.id,
+        counsellor_user_id=current_user_id
+    ).first()
+    
+    if not assignment:
+        return error_response("Unauthorized. Student is not assigned to you.", 403)
         
     if snapshot.status != "pending":
         return error_response(f"Snapshot is already {snapshot.status}", 400)

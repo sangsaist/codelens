@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from 'recharts'
 import Navbar from '../components/layout/Navbar'
 import Loader from '../components/common/Loader'
@@ -12,6 +13,9 @@ const InstitutionDashboard = () => {
     const [atRiskStudents, setAtRiskStudents] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+
+    const location = useLocation()
+    const isHOD = location.pathname.includes('/department')
 
     useEffect(() => {
         const fetchDashboardData = async () => {
@@ -87,9 +91,19 @@ const InstitutionDashboard = () => {
             <Navbar />
 
             <header className="bg-white shadow">
-                <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900">Institution Dashboard</h1>
-                    <p className="mt-1 text-sm text-gray-500">Overview of academic performance and engagement.</p>
+                <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Institution Dashboard</h1>
+                        <p className="mt-1 text-sm text-gray-500">Overview of academic performance and engagement.</p>
+                    </div>
+                    {isHOD && (
+                        <Link
+                            to="/department/students"
+                            className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                            Manage Students &rarr;
+                        </Link>
+                    )}
                 </div>
             </header>
 

@@ -5,7 +5,8 @@ from app.extensions import db
 from app.auth.models import User, Role, UserRole
 from app.staff.models import StaffProfile
 from app.academics.models import Department
-from app.common.utils import hash_password, success_response, error_response, is_admin, is_hod, is_advisor
+from app.students.models import Student, StudentAdvisor, StudentCounsellor
+from app.common.utils import hash_password, success_response, error_response, is_admin, is_hod, is_advisor, is_counsellor
 from datetime import datetime
 
 staff_bp = Blueprint("staff_bp", __name__, url_prefix="/staff")
@@ -169,3 +170,113 @@ def get_my_team():
         })
 
     return success_response(data)
+
+# --- Assignment Routes ---
+
+@staff_bp.route("/assign-advisor", methods=["POST"])
+@jwt_required()
+def assign_advisor():
+    """HOD assigns students to an Advisor"""
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    
+    # 1. HOD/Admin Check
+    if not is_admin(user) and not is_hod(user, None):
+        return error_response("Access Denied. HOD role required.", 403)
+        
+    data = request.get_json()
+    advisor_id = data.get("advisor_id")
+    student_ids = data.get("student_ids", [])
+    
+    if not advisor_id or not student_ids:
+        return error_response("Missing advisor_id or student_ids")
+        
+    # 2. Verify Advisor
+    advisor = User.query.get(advisor_id)
+    if not advisor or not is_advisor(advisor):
+         return error_response("Invalid advisor selected", 400)
+    
+    # 3. Dept Match Check (for HOD)
+    if not is_admin(user):
+        # Ensure Advisor is in HOD's department
+        hod_dept_id = user.department_hod_of.id if user.department_hod_of else None
+        
+        # Check advisor's profile for dept match
+        adv_profile = StaffProfile.query.filter_by(user_id=advisor.id).first()
+        if not adv_profile or adv_profile.department_id != hod_dept_id:
+             return error_response("Advisor does not belong to your department", 403)
+
+    count = 0
+    skipped = 0
+    for sid in student_ids:
+        student = Student.query.get(sid)
+        if not student: 
+            skipped += 1
+            continue
+            
+        # Ensure student is in same dept
+        if not is_admin(user) and student.department_id and student.department_id != user.department_hod_of.id:
+            skipped += 1
+            continue
+            
+        # Upsert assignment
+        assignment = StudentAdvisor.query.filter_by(student_id=sid).first()
+        if assignment:
+            assignment.advisor_user_id = advisor_id
+        else:
+            assignment = StudentAdvisor(student_id=sid, advisor_user_id=advisor_id)
+            db.session.add(assignment)
+        count += 1
+        
+    db.session.commit()
+    return success_response({"assigned_count": count, "skipped_count": skipped}, f"Assigned {count} students to advisor")
+
+@staff_bp.route("/assign-counsellor", methods=["POST"])
+@jwt_required()
+def assign_counsellor():
+    """Advisor assigns students to a Counsellor"""
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    
+    # 1. Advisor Check
+    if not is_advisor(user) and not is_admin(user) and not is_hod(user, None):
+         return error_response("Access Denied. Advisor role required.", 403)
+         
+    data = request.get_json()
+    counsellor_id = data.get("counsellor_id")
+    student_ids = data.get("student_ids", [])
+    
+    if not counsellor_id or not student_ids:
+         return error_response("Missing counsellor_id or student_ids")
+         
+    # 2. Verify Counsellor
+    counsellor = User.query.get(counsellor_id)
+    if not counsellor or not is_counsellor(counsellor):
+         return error_response("Invalid counsellor selected", 400)
+         
+    # Logic: Advisor can usually assign ANY student linked to them
+    # But if user is dual role (HOD+Advisor), they might assign department students.
+    # We'll enforce: Student must be assigned to current user (as Advisor) OR User is HOD/Admin.
+    
+    count = 0
+    skipped = 0
+    for sid in student_ids:
+        # Check permissions over student
+        if not is_admin(user) and not is_hod(user, None):
+             # Must be my student
+             is_my_student = StudentAdvisor.query.filter_by(student_id=sid, advisor_user_id=current_user_id).first()
+             if not is_my_student:
+                 skipped += 1
+                 continue
+        
+        # Upsert Counsellor assignment
+        assignment = StudentCounsellor.query.filter_by(student_id=sid).first()
+        if assignment:
+            assignment.counsellor_user_id = counsellor_id
+        else:
+            assignment = StudentCounsellor(student_id=sid, counsellor_user_id=counsellor_id)
+            db.session.add(assignment)
+        count += 1
+        
+    db.session.commit()
+    return success_response({"assigned_count": count, "skipped_count": skipped}, f"Assigned {count} students to counsellor")
